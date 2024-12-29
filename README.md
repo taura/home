@@ -74,7 +74,7 @@ enc_drv PARTLABEL=enc_part none
 
 ## /etc/fstab
 ```
-LABEL=enc_home	/enc_home	ext4	defaults,errors=remount-ro,noatime,nofail,x-systemd.device-timeout=10s	0	1
+LABEL=enc_home	/home	ext4	defaults,errors=remount-ro,noatime,nofail,x-systemd.device-timeout=10s	0	1
 ```
 
 # test (optional)
