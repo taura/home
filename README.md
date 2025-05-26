@@ -88,3 +88,19 @@ sudo mount /dev/mapper/enc_drv /tmp/enc_drv
 sudo cryptsetup luksClose enc_drv
 ```
 
+# work around a bug 
+
+* There is a bug in which password input dialog does not show up
+* to work this around, suppress graphical boot screen by the following
+
+```
+#GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX_DEFAULT=""
+```
+
+```
+$ sudo update-grub
+```
+
+and restart
+
