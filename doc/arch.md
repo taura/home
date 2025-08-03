@@ -131,7 +131,7 @@ fc-match
 sudo pacman -S fcitx5 fcitx5-configtool fcitx5-mozc fcitx5-gtk fcitx5-qt
 ```
 
-以下の設定を `~/.config/environment.d/適当なファイル` に書いておく (実際は `~/cfg3/rc/_bash_profile` に書いて, `~/.config/environment.d/_bash_profile` -> `~/cfg3/rc/_bash_profile` というリンクを作る (下記参照)
+以下の設定を `~/.config/environment.d/なんとか.conf` に書いておく (実際は `~/.profile` に書いて, `~/.config/environment.d/env.conf` -> `~/.profile` というリンクを作る (下記参照)
 
 ```
 GTK_IM_MODULE=fcitx
@@ -142,10 +142,10 @@ XMODIFIERS="@im=fcitx"
 # 設定について今回わかったこと
 
 * GUI (sddm) 環境は 
-  * `~/.config/environment.d/` 下のファイルを読む
+  * `~/.config/environment.d/` 下の, `*.conf` ファイルを読む
   * `~/.profile` や ましてや `~/.bash_profile` も `~/.bashrc` は読まない
-* terminal の shell から起動するのであれば `~/.bash_profile` に書いた設定が浸透するが, 直接起動する GUI アプリ (emacs の M-x compile なども含む) の場合, `~/.bash_profile` の設定が読まれないので不都合
-* `~/.config/environment.d/_bash_profile` -> `~/cfg3/rc/_bash_profile` というリンクを作って解決
+* terminal の shell から起動するのであれば `~/.bash_profile` に書いた設定が継承されるが, 直接起動する GUI アプリ (emacs の M-x compile なども含む) の場合, `~/.bash_profile` の設定が読まれないので不都合
+* `~/.config/environment.d/env.conf` -> `~/.profile` というリンクを作って解決
 
 # .bashrc と .bash_profile
 
@@ -155,7 +155,8 @@ XMODIFIERS="@im=fcitx"
 ので, 一般論としては `~/.bash_profile` にumask, 環境変数の設定を書き, シェル固有の alias や 関数は `~/.bashrc` に書くらしい
 
 * 以前, 面倒なので, 全部 `~/.bashrc` に書いて, `~/.bash_profile` はそれを source していたがこのたび, 分離した
-* そして `~/.config/environment.d/` から `~/.bash_profile` をリンク
+* そして `~/.config/environment.d/env.conf` から `~/.profile` をリンク
+  * 実際は自分は `~/.profile` は作らずに `~/.bash_profile` を使っており祖霊自体が `~/cfg3/rc/_bash_profile` というファイルへのリンクなので `~/.config/environment.d/env.conf` -> `~/cfg3/rc/_bash_profile` というリンク
 
 # Python virtual env と virt-manager
 
