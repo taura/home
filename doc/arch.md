@@ -168,6 +168,35 @@ sudo usermod -aG libvirt,kvm $USER
 * 再起動後に無事 virt-manager で QEMU/KVM という connection がちゃんと有効になり, 新しい仮想マシンを作れるようになるはず
 * 上記 (`/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする) をやったおかげで existing image を選んで仮想マシンを作るところで昔作った qcow2 ファイルが表示されるはず
 
+## samba
+
+```
+sudo pacman -S samba
+sudo systemctl enable smb nmb
+sudo smbpasswd -a tau
+sudo smbpasswd -e tau
+```
+
+```
+# /etc/samba/smb.conf
+
+[global]
+   workgroup = WORKGROUP
+   server string = Samba Server
+   security = user
+   map to guest = never
+   smb ports = 445
+   interfaces = lo 192.168.122.1
+   bind interfaces only = yes
+
+[tau]
+   path = /home/tau
+   valid users = tau
+   read only = no
+   browseable = yes
+
+```
+
 # 設定について今回わかったこと
 
 * GUI (sddm) 環境は 
