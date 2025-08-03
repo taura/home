@@ -61,7 +61,7 @@ LABEL=enc_home	/home	ext4	defaults,errors=remount-ro,noatime,nofail,x-systemd.de
 # 必須アプリのインストール
 
 ```
-sudo pacman -S emacs firefox virt-manager
+sudo pacman -S emacs firefox 
 ```
 
 # yay のインストール
@@ -138,6 +138,35 @@ GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx
 XMODIFIERS="@im=fcitx"
 ```
+
+# 仮想マシン関係
+
+```
+sudo pacman -Q qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils libvirt
+```
+
+* `virt-manager` だけではダメみたい (Virtual Machine Manager の画面で connection が表示されない)
+
+* 起動する前に以下 `/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする
+* (必要なのは images の中だけなので慎重を期すなら
+  * `/home/tau/vms/libvirt` をrename `/home/tau/vms/libvirt_x`
+  *  `/var/lib/libvirt` を `/home/tau/vms/` に cp
+  *  `/home/tau/vms/images` (空のはず) を rmdir
+  *  `/home/tau/vms/libvirt_x/images` を `/home/tau/vms/libvirt/` に mv
+  *  `/var/lib/libvirt` を `/var/lib/libvirt_org` か何かに rename
+  *  `/var/lib/libvirt` -> `/home/tau/vms/libvirt` に ln -s)
+    
+```
+sudo systemctl enable libvirtd
+```
+
+```
+sudo usermod -aG libvirt,kvm $USER
+```
+
+* 再起動
+* 再起動後に無事 virt-manager で QEMU/KVM という connection がちゃんと有効になり, 新しい仮想マシンを作れるようになるはず
+* 上記 (`/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする) をやったおかげで existing image を選んで仮想マシンを作るところで昔作った qcow2 ファイルが表示されるはず
 
 # 設定について今回わかったこと
 
