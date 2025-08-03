@@ -141,6 +141,8 @@ XMODIFIERS="@im=fcitx"
 
 # 仮想マシン関係
 
+## 基本
+
 ```
 sudo pacman -Q qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils libvirt
 ```
@@ -167,6 +169,14 @@ sudo usermod -aG libvirt,kvm $USER
 * 再起動
 * 再起動後に無事 virt-manager で QEMU/KVM という connection がちゃんと有効になり, 新しい仮想マシンを作れるようになるはず
 * 上記 (`/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする) をやったおかげで existing image を選んで仮想マシンを作るところで昔作った qcow2 ファイルが表示されるはず
+
+## 起動時でネットワークがないという失敗
+
+```
+sudo virsh net-start default
+sudo virsh net-autostart default
+```
+
 
 ## samba
 
