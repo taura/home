@@ -76,6 +76,12 @@ makepkg -si
 
 # yay でいれるアプリのインストール
 
+* これｈdropboxのために必要
+
+```
+pacman -S libappindicator-gtk3
+```
+
 ```
 yay -S slack-desktop zoom dropbox
 ```
@@ -183,8 +189,6 @@ sudo virsh net-autostart default
 ```
 sudo pacman -S samba
 sudo systemctl enable smb nmb
-sudo smbpasswd -a tau
-sudo smbpasswd -e tau
 ```
 
 ```
@@ -206,6 +210,45 @@ sudo smbpasswd -e tau
    browseable = yes
 
 ```
+
+```
+sudo smbpasswd -a tau
+sudo smbpasswd -e tau
+```
+
+# プリンタ
+
+## 大学の Canon LBP661C
+
+```
+sudo pacman -S cups cups-pdf system-config-printer print-manager
+```
+
+```
+sudo systemctl enable --now cups
+```
+
+```
+yay -S cnrdrvcups-lb
+```
+
+とすると, Settings -> Add Printer でひとりでにそのプリンタを見つけてくれる
+
+* http://localhost:631 につなぐのでもいいみたい
+
+
+# その他この他
+
+```
+sudo pacman -S chromium
+```
+
+```
+sudo pacman -S kooha
+```
+
+
+
 
 # 設定について今回わかったこと
 
