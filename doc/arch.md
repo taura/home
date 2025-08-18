@@ -139,9 +139,11 @@ sudo pacman -S fcitx5 fcitx5-configtool fcitx5-mozc fcitx5-gtk fcitx5-qt
 
 以下の設定を `~/.config/environment.d/なんとか.conf` に書いておく (実際は `~/.profile` に書いて, `~/.config/environment.d/env.conf` -> `~/.profile` というリンクを作る (下記参照)
 
+最初の2行はいらない (色々なサイトに必要と書いてあるがこれをいれるとログイン後に変な警告が出る)
+
 ```
-GTK_IM_MODULE=fcitx
-QT_IM_MODULE=fcitx
+#GTK_IM_MODULE=fcitx
+#QT_IM_MODULE=fcitx
 XMODIFIERS="@im=fcitx"
 ```
 
@@ -176,7 +178,30 @@ sudo usermod -aG libvirt,kvm $USER
 * 再起動後に無事 virt-manager で QEMU/KVM という connection がちゃんと有効になり, 新しい仮想マシンを作れるようになるはず
 * 上記 (`/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする) をやったおかげで existing image を選んで仮想マシンを作るところで昔作った qcow2 ファイルが表示されるはず
 
+## Windows 11
+
+swtpm を入れて, VM に TPM を add hardware する
+
+```
+sudo pacman -Syu --needed qemu-full libvirt virt-manager edk2-ovmf swtpm
+```
+
+* インストールメディアは外から拾ってもよいが `~/soft/iso/win/` 下においてある
+* このメディアではインストール中にネットに繋がなければローカルアカウントでインストールできる
+* 新しいメディアではもっと執拗だと思われる
+
+
+* インストール後ライセンス認証はWindows内で
+
+```
+slmgr.vbs /ipk プロダクトキー
+slmgr.vbs /skms キー管理サーバxxxx.ac.jp
+slmgr.vbs /ato
+```
+
 ## 起動時でネットワークがないという失敗
+
+以下で直るはずだがやっても直る気配なし
 
 ```
 sudo virsh net-start default
