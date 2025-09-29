@@ -159,7 +159,7 @@ sudo pacman -Q qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils libvirt
 
 * 以下に色々 symlink を使う方法は arch では通用しない. user session を使うが吉. 変なトリックは不要になる
 * ただし host -> guest の通信 (ssh) ができなくなる
-* そのためには slirp networking ではなく passt を使う必要がある
+* そのためには slirp networking ではなく passt を使う必要がある https://libvirt.org/formatdomain.html#userspace-connection-using-slirp
 ```
 pacman -S passt
 EDITOR=emacs virsh --connect qemu:///session edit ubu24 # <-- 適切なVM名
