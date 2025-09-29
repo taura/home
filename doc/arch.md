@@ -157,6 +157,30 @@ sudo pacman -Q qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils libvirt
 
 * `virt-manager` だけではダメみたい (Virtual Machine Manager の画面で connection が表示されない)
 
+* 以下に色々 symlink を使う方法は arch では通用しない. user session を使うが吉. 変なトリックは不要になる
+* ただし host -> guest の通信 (ssh) ができなくなる
+* そのためには slirp networking ではなく passt を使う必要がある
+```
+pacman -S passt
+EDITOR=emacs virsh --connect qemu:///session edit ubu24 # <-- 適切なVM名
+```
+
+* `<interface type='user'>` のところを見つけて以下のように置き換える
+* mac addressの部分は適切に元の値を保存する
+
+```
+<interface type='user'>
+  <backend type='passt'/>
+  <mac address='52:54:00:4e:b8:d6'/>
+  <portForward proto='tcp'>
+    <range start='2222' to='22'/>
+  </portForward>
+  <model type='virtio'/>
+  <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
+</interface>
+```
+
+<!---
 * 起動する前に以下 `/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする
 * (必要なのは images の中だけなので慎重を期すなら
   * `/home/tau/vms/libvirt` をrename `/home/tau/vms/libvirt_x`
@@ -165,10 +189,13 @@ sudo pacman -Q qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils libvirt
   *  `/home/tau/vms/libvirt_x/images` を `/home/tau/vms/libvirt/` に mv
   *  `/var/lib/libvirt` を `/var/lib/libvirt_org` か何かに rename
   *  `/var/lib/libvirt` -> `/home/tau/vms/libvirt` に ln -s)
-    
+--->    
+
 ```
 sudo systemctl enable libvirtd
 ```
+
+user session で使うときは以下が必要か不明
 
 ```
 sudo usermod -aG libvirt,kvm $USER
@@ -176,7 +203,9 @@ sudo usermod -aG libvirt,kvm $USER
 
 * 再起動
 * 再起動後に無事 virt-manager で QEMU/KVM という connection がちゃんと有効になり, 新しい仮想マシンを作れるようになるはず
+<!---
 * 上記 (`/var/lib/libvirt` を -> `/home/tau/vms/libvirt` へのリンクにする) をやったおかげで existing image を選んで仮想マシンを作るところで昔作った qcow2 ファイルが表示されるはず
+--->
 
 ## Windows 11
 
@@ -294,8 +323,9 @@ sudo pacman -S kooha
 * そして `~/.config/environment.d/env.conf` から `~/.profile` をリンク
   * 実際は自分は `~/.profile` は作らずに `~/.bash_profile` を使っており祖霊自体が `~/cfg3/rc/_bash_profile` というファイルへのリンクなので `~/.config/environment.d/env.conf` -> `~/cfg3/rc/_bash_profile` というリンク
 
-# Python virtual env と virt-manager
+# Python virtual env 
 
 * 最近のUbuntuで pip を使いたければ virtual env というノリになってきたので `~/.bash_profile` 中で virtual env を activate していたがそれをやると virt-manager がそれを使ってしまい, その中に `gi` というモジュールがない, というトラブルを引き起こした
 * なので `~/.bash_profile` 中で virtual env を activate するのをやめた
 * ただしそうすると, GUI アプリ (emacs 内の Python 環境を含む) で virtual env を使えないという不便がある
+
